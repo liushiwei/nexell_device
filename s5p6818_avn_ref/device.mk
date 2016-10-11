@@ -28,7 +28,7 @@ PRODUCT_COPY_FILES += \
 	device/nexell/s5p6818_avn_ref/adj_lowmem.sh:root/adj_lowmem.sh \
 	device/nexell/s5p6818_avn_ref/start_deferred.sh:root/start_deferred.sh \
 	device/nexell/s5p6818_avn_ref/mon_snd.sh:root/mon_snd.sh \
-	device/nexell/s5p4418_msd8000b/factory_reset.sh:root/factory_reset.sh
+	device/nexell/s5p6818_avn_ref/factory_reset.sh:root/factory_reset.sh
 
 ################################################################################
 # recovery 
@@ -60,18 +60,24 @@ PRODUCT_PACKAGES += \
 ################################################################################
 # audio
 ################################################################################
+# Dual Audio
+EN_DUAL_AUDIO := true
+EN_DUAL_AUDIO_PATH_SPDIF := true
+ifeq ($(EN_DUAL_AUDIO),true)
+PRODUCT_COPY_FILES += \
+	hardware/samsung_slsi/slsiap/prebuilt/libnxdualaudio/lib/libnxdualaudio.so:system/lib/libnxdualaudio.so
+endif
+
 # mixer paths
 PRODUCT_COPY_FILES += \
 	device/nexell/s5p6818_avn_ref/audio/tiny_hw.s5p6818_avn_ref.xml:system/etc/tiny_hw.s5p6818_avn_ref.xml
 # audio policy configuration
+ifeq ($(EN_DUAL_AUDIO_PATH_SPDIF),true)
+PRODUCT_COPY_FILES += \
+	device/nexell/s5p6818_avn_ref/audio/audio_policy_disable_spdif.conf:system/etc/audio_policy.conf
+else
 PRODUCT_COPY_FILES += \
 	device/nexell/s5p6818_avn_ref/audio/audio_policy.conf:system/etc/audio_policy.conf
-
-# Dual Audio
-EN_DUAL_AUDIO := true
-ifeq ($(EN_DUAL_AUDIO),true)
-PRODUCT_COPY_FILES += \
-	hardware/samsung_slsi/slsiap/prebuilt/libnxdualaudio/lib/libnxdualaudio.so:system/lib/libnxdualaudio.so
 endif
 
 ################################################################################
@@ -101,9 +107,35 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
 	hardware/samsung_slsi/slsiap/prebuilt/avn_monitor/nx_avn_monitor:system/bin/nx_avn_monitor
 
+################################################################################
+# RearCamera Application
+################################################################################
+PRODUCT_COPY_FILES += \
+    hardware/samsung_slsi/slsiap/prebuilt/NxRearCamService/NxRearCamService:system/bin/NxRearCamService
+
+# iOS iAP/Tethering
+BOARD_USES_IOS_IAP_TETHERING := true
+ifeq ($(BOARD_USES_IOS_IAP_TETHERING),true)
+PRODUCT_PACKAGES += \
+	libiconv		\
+	libxml2_ios		\
+	libusb_ios		\
+	libplist		\
+	libusbmuxd 		\
+	libimobiledevice	\
+	usbmuxdd	
+#	ipod_dev_mgr_server	\
+	ipod_dev_mgr_client	
+
+PRODUCT_COPY_FILES += \
+	hardware/samsung_slsi/slsiap/ios_tether/libiOSMgr/lib/libiOSMgr.so:system/lib/libiOSMgr.so	\
+	hardware/samsung_slsi/slsiap/ios_tether/iOS_mgr_service/ipod_dev_mgr_server:system/bin/ipod_dev_mgr_server	\
+	hardware/samsung_slsi/slsiap/ios_tether/iOS_mgr_service/ipod_dev_mgr_client:system/bin/ipod_dev_mgr_client
+endif
+
 # ffmpeg libraries
-EN_FFMPEG_EXTRACTOR := false
-EN_FFMPEG_AUDIO_DEC := false
+EN_FFMPEG_EXTRACTOR := true
+EN_FFMPEG_AUDIO_DEC := true
 ifeq ($(EN_FFMPEG_EXTRACTOR),true)
 PRODUCT_COPY_FILES += \
 	hardware/samsung_slsi/slsiap/omx/codec/ffmpeg/libs/libavcodec-2.1.4.so:system/lib/libavcodec-2.1.4.so    \
@@ -226,14 +258,20 @@ ifeq ($(BOARD_WIFI_VENDOR),realtek)
 $(call inherit-product-if-exists, hardware/realtek/wlan/config/p2p_supplicant.mk)
 endif
 
-ifeq ($(BOARD_WIFI_VENDOR),broadcom)
+#ifeq ($(BOARD_WIFI_VENDOR),broadcom)
 WIFI_BAND := 802_11_BG
-$(call inherit-product-if-exists, hardware/broadcom/wlan/bcmdhd/firmware/bcm4329/device-bcm.mk)
-endif
+$(call inherit-product-if-exists, hardware/broadcom/wlan/bcmdhd/firmware/ap6181/device-bcm.mk)
+#endif
 
 # call slsiap
 $(call inherit-product-if-exists, hardware/samsung_slsi/slsiap/slsiap.mk)
 
 # Nexell Application
-$(call inherit-product-if-exists, vendor/nexell/apps/nxapps.mk)
+$(call inherit-product-if-exists, vendor/nexell/apps/nxvideoplayer.mk)
+$(call inherit-product-if-exists, vendor/nexell/apps/nxaudioplayer.mk)
+$(call inherit-product-if-exists, vendor/nexell/apps/nxlauncher.mk)
+$(call inherit-product-if-exists, vendor/nexell/apps/nxipodaudioplayer.mk)
+$(call inherit-product-if-exists, vendor/nexell/apps/nxauxcontrol.mk)
+$(call inherit-product-if-exists, vendor/nexell/apps/nxsystemsetting.mk)
+$(call inherit-product-if-exists, vendor/nexell/apps/nxdualaudiotest.mk)
 $(call inherit-product-if-exists, vendor/nexell/apps/smartsync.mk)

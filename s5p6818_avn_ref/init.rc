@@ -332,7 +332,17 @@ on post-fs-data
     # Set indication (checked by vold) that we have finished this action
     #setprop vold.post_fs_data_done 1
 
+    # iOS iAP/Tethering
+    mkdir /var
+    chmod 0777 /var
+    mkdir /var/run
+    chmod 0777 /var/run
+    mkdir /var/lib
+    chmod 0777 /var/lib
+
 on boot
+	# Set default media player to awesome player
+	setprop media.stagefright.use-awesome 1
 
     # basic network init
     ifup lo
@@ -475,6 +485,10 @@ on property:sys.sysctl.extra_free_kbytes=*
 on property:sys.sysctl.tcp_def_init_rwnd=*
     write /proc/sys/net/ipv4/tcp_default_init_rwnd ${sys.sysctl.tcp_def_init_rwnd}
 
+# iOS iAP/Tethering monitor
+service ipod_monitor /system/bin/ipod_dev_mgr_server
+    class main
+    oneshot
 
 ## Daemon processes to be run by init.
 ##
@@ -614,6 +628,17 @@ service pre-recovery /system/bin/uncrypt
     class main
     disabled
     oneshot
+
+service dhcpcd_eth0 /system/bin/dhcpcd -aABDKL
+    class late_start
+    disabled
+    oneshot
+
+service iprenew_eth0 /system/bin/dhcpcd -n
+    class late_start
+    disabled
+    oneshot
+
 
 on property:persist.sys.usb.config=*
     setprop sys.usb.config ${persist.sys.usb.config}

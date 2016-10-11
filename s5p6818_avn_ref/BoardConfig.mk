@@ -42,7 +42,7 @@ USE_OPENGL_RENDERER := true
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
 
 #Touch
-BOARD_USES_TSLIB := false
+BOARD_USES_TSLIB := true
 
 # audio
 BOARD_USES_GENERIC_AUDIO := false
@@ -50,6 +50,7 @@ BOARD_USES_ALSA_AUDIO 	 := false
 
 # Dual Audio
 EN_DUAL_AUDIO := true
+EN_DUAL_AUDIO_PATH_SPDIF := true
 
 BOARD_HAVE_BLUETOOTH := false
 
@@ -60,13 +61,18 @@ BOARD_HAS_CAMERA := true
 BOARD_HAS_SENSOR := false
 BOARD_SENSOR_TYPE := general
 
-EN_FFMPEG_EXTRACTOR := false
-EN_FFMPEG_AUDIO_DEC := false
+EN_FFMPEG_EXTRACTOR := true
+EN_FFMPEG_AUDIO_DEC := true
+
+
+# iOS iAP/Tethering
+BOARD_USES_IOS_IAP_TETHERING := true
+
 
 # wifi
 # broadcom bcm4329
 # realtek 8188eu
-BOARD_WIFI_VENDOR := realtek
+BOARD_WIFI_VENDOR := broadcom
 ifeq ($(BOARD_WIFI_VENDOR),broadcom)
 BOARD_WPA_SUPPLICANT_DRIVER	:= NL80211
 WPA_SUPPLICANT_VERSION		:= VER_0_8_X
@@ -75,9 +81,10 @@ BOARD_HOSTAPD_DRIVER		:= NL80211
 BOARD_HOSTAPD_PRIVATE_LIB	:= lib_driver_cmd_bcmdhd
 BOARD_WLAN_DEVICE		:= bcmdhd
 WIFI_DRIVER_FW_PATH_PARAM	:= "/sys/module/bcmdhd/parameters/firmware_path"
-WIFI_DRIVER_FW_PATH_STA		:= "/vendor/firmware/fw_bcmdhd.bin"
-WIFI_DRIVER_FW_PATH_P2P		:= "/vendor/firmware/fw_bcmdhd_p2p.bin"
-WIFI_DRIVER_FW_PATH_AP		:= "/vendor/firmware/fw_bcmdhd_apsta.bin"
+WIFI_DRIVER_FW_PATH_STA		:= "/system/etc/firmware/fw_bcm40181a2.bin"
+WIFI_DRIVER_FW_PATH_P2P		:= "/system/etc/firmware/fw_bcm40181a2_p2p.bin"
+WIFI_DRIVER_FW_PATH_AP		:= "/system/etc/firmware/fw_bcm40181a2_apsta.bin"
+WIFI_DRIVER_MODULE_ARG      := "iface_name=wlan firmware_path=/system/etc/firmware/fw_bcm40181a2.bin nvram_path=/system/etc/firmware/nvram.txt"
 endif
 
 ifeq ($(BOARD_WIFI_VENDOR),realtek)
