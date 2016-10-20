@@ -1,5 +1,6 @@
 PRODUCT_PACKAGES += \
-   Launcher2 
+   Launcher2 \
+   Browser 
 
 PRODUCT_COPY_FILES += \
 	otherApps/lib/armeabi/libadcode-2.0.1.so:system/lib/libadcode-2.0.1.so \
@@ -40,9 +41,31 @@ PRODUCT_COPY_FILES += \
 	otherApps/lib/armeabi/libu16.ltr.dct.so:system/lib/libu16.ltr.dct.so \
 	otherApps/lib/armeabi/libvlcjni.so:system/lib/libvlcjni.so \
 	otherApps/lib/armeabi/libvlc.so:system/lib/libvlc.so \
+	otherApps/lib/armeabi/libgnustl_shared.so:system/lib/libgnustl_shared.so \
+	otherApps/lib/armeabi/libjni_delight.so:system/lib/libjni_delight.so \
+	otherApps/lib/armeabi/libhwr.so:system/lib/libhwr.so \
+	otherApps/lib/armeabi/libjni_googlepinyinime_latinime_5.so:system/lib/libjni_googlepinyinime_latinime_5.so \
+	otherApps/lib/armeabi/libhwrword.so:system/lib/libhwrword.so \
+	otherApps/lib/armeabi/libjni_hmm_shared_engine.so:system/lib/libjni_hmm_shared_engine.so \
+	otherApps/lib/armeabi/libhwrzhmodel.so:system/lib/libhwrzhmodel.so \
+	otherApps/lib/armeabi/libpinyin_data_bundle.so:system/lib/libpinyin_data_bundle.so \
+	otherApps/lib/armeabi/libairplay-jni.so:system/lib/libairplay-jni.so \
+	otherApps/lib/armeabi/libcshell.so:system/lib/libcshell.so \
+	otherApps/lib/armeabi/libecgl2jni.so:system/lib/libecgl2jni.so \
+	otherApps/lib/armeabi/libecgl2jni_41.so:system/lib/libecgl2jni_41.so \
+	otherApps/lib/armeabi/libecgl2jni_vfpv3.so:system/lib/libecgl2jni_vfpv3.so \
+	otherApps/lib/armeabi/libgst_render.so:system/lib/libgst_render.so \
+	otherApps/lib/armeabi/libmDNSEmbedded.so:system/lib/libmDNSEmbedded.so \
+	otherApps/lib/armeabi/libmediaserver.so:system/lib/libmediaserver.so \
 	otherApps/com.estrongs.android.apk:system/app/com.estrongs.android.apk \
 	otherApps/guanwang.apk:system/app/amap.apk \
-	otherApps/VLC-Android.apk:system/app/VLC-Android.apk 
+	otherApps/VLC-Android.apk:system/app/VLC-Android.apk \
+	otherApps/FileManager.apk:system/app/FileManager.apk \
+	otherApps/EasyConnected.apk:system/app/EasyConnected.apk \
+	otherApps/easyconnected/adb-ec:system/bin/adb-ec \
+	otherApps/easyconnected/usb_modeswitch-ec:system/bin/usb_modeswitch-ec \
+	otherApps/GooglePinyin.apk:system/app/GooglePinyin.apk \
+	otherApps/systemLib/gps.slsiap.so:system/lib/hw/gps.slsiap.so 
 
 PRODUCT_PROPERTY_OVERRIDES := \
         net.dns1=8.8.8.8 \
